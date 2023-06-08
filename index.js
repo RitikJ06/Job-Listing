@@ -9,6 +9,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("./public"));
 
+app.get('/health', (req, res) => {
+    res.send("Everything is working fine!")
+})
+
 app.listen(process.env.PORT, () => {
   mongoose
     .connect(process.env.DB_URL, {
