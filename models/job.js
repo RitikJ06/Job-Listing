@@ -10,7 +10,7 @@ const jobSchema = new mongoose.Schema({
   workingMode: {type: String, required: true},
   jobDescription: {type: String, required: true},
   aboutCompany: {type: String, required: true},
-  skills: {type: String, required: true},
+  skills: {type: Array, required: true},
   logo: String,
   location: String,
 });
