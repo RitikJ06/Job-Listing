@@ -29,7 +29,6 @@ app.get("/health", (req, res) => {
   res.send("Everything is working fine!");
 });
 
-
 // api to login a user
 app.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
@@ -44,6 +43,7 @@ app.post("/login", async (req, res, next) => {
         return res.send({
           status: "SUCCESS",
           message: "User logged in successfully",
+          name: user.name,
           jwtToken,
         });
       }
@@ -80,6 +80,7 @@ app.post("/register", async (req, res, next) => {
     res.send({
       status: "SUCCESS",
       message: "User created successfully",
+      name: name,
       jwtToken,
     });
   } catch (error) {
@@ -99,19 +100,22 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
     jobDescription,
     aboutCompany,
     skills,
+    noOfEmployees,
     logo,
     location,
   } = req.body;
   try {
-    if 
-      ((!companyName ||
-        !position ||
-        !monthlySalary ||
-        !jobType ||
-        !workingMode ||
-        !jobDescription ||
-        !aboutCompany ||
-        !skills) || (workingMode == "office" && !location) ||
+    if (
+      !companyName ||
+      !position ||
+      !monthlySalary ||
+      !jobType ||
+      !workingMode ||
+      !jobDescription ||
+      !aboutCompany ||
+      !noOfEmployees ||
+      !skills ||
+      (workingMode == "office" && !location) ||
       (jobType == "internship" && !internshipDuration)
     ) {
       const err = new Error("All required fileds are not provided!");
@@ -128,7 +132,8 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
       workingMode,
       jobDescription,
       aboutCompany,
-      skills: skills.split(",").map(s => s.trim()),
+      skills: skills.split(",").map((s) => s.trim()),
+      noOfEmployees,
       logo,
       location
     });
@@ -143,39 +148,109 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
 
 // api to get all jobs or with filter
 app.get("/api/jobs", async (req, res, next) => {
-  try{
-    const {filterBySkills} = req.body;
+  try {
+    const { filterBySkills } = req.body;
     let jobs;
-    if(filterBySkills){
-      jobs = await Job.find({skills: {$in: filterBySkills.split(',').map(s => s.trim())}})
-    }
-    else{
-      jobs = await Job.find()
+    if (filterBySkills) {
+      jobs = await Job.find({
+        skills: { $in: filterBySkills.split(",").map((s) => s.trim()) },
+      });
+    } else {
+      jobs = await Job.find();
     }
 
-    res.json(jobs.map((job) => {return {position: job.position, noOfEmployees:job.noOfEmployees, monthlySalary: job.monthlySalary, location: job.location, jobType: job.jobType, workingMode: job.workingMode, logo:job.logo, skills: job.skills} }))
-  }
-  catch{
-    const err = new Error("Error Fetching jobs"); 
+    res.json(
+      jobs.map((job) => {
+        return {
+          position: job.position,
+          noOfEmployees: job.noOfEmployees,
+          monthlySalary: job.monthlySalary,
+          location: job.location,
+          jobType: job.jobType,
+          workingMode: job.workingMode,
+          logo: job.logo,
+          skills: job.skills,
+        };
+      })
+    );
+  } catch {
+    const err = new Error("Error Fetching jobs");
     err.status = 500;
     next(err);
-  } 
-})
+  }
+});
 
 // api to get detailed description of a job
 app.get("/api/jobs/:id", async (req, res, next) => {
-  try{
+  try {
     const jobID = req.params;
     const job = await Job.findById(jobID.id);
-    res.json(job)
-  }
-  catch{
+    res.json(job);
+  } catch {
     const err = new Error("Error Fetching the job");
     err.status = 500;
     next(err);
-  } 
-})
+  }
+});
 
+// api to edit a job post
+app.put("/api/jobs/:id", isAuthenticated, async (req, res, next) => {
+  const {id} = req.params;
+  const {
+    companyName,
+    position,
+    monthlySalary,
+    jobType,
+    internshipDuration,
+    workingMode,
+    jobDescription,
+    aboutCompany,
+    skills,
+    noOfEmployees,
+    logo,
+    location,
+  } = req.body;
+  try {
+    if (
+      !companyName ||
+      !position ||
+      !monthlySalary ||
+      !jobType ||
+      !workingMode ||
+      !jobDescription ||
+      !aboutCompany ||
+      !noOfEmployees ||
+      !skills ||
+      (workingMode == "office" && !location) ||
+      (jobType == "internship" && !internshipDuration)
+    ) {
+      const err = new Error("All required fileds are not provided!");
+      err.status = 403;
+      next(err);
+    }
+
+    await Job.findByIdAndUpdate(id, {
+      companyName,
+      position,
+      monthlySalary: +monthlySalary,
+      jobType,
+      internshipDuration,
+      workingMode,
+      jobDescription,
+      aboutCompany,
+      skills: skills.split(",").map((s) => s.trim()),
+      noOfEmployees,
+      logo,
+      location
+    })
+
+    return res.json({ staus: "success", message: "Job updated successfully"});
+  } catch {
+    const err = new Error("Error updating the job");
+    err.status = 500;
+    next(err);
+  }
+});
 
 app.use((req, res, next) => {
   const err = new Error("Not found");
