@@ -153,7 +153,7 @@ app.get("/api/jobs", async (req, res, next) => {
       jobs = await Job.find()
     }
 
-    res.json(jobs.map((job) => {return {position: job.position, monthlySalary: job.monthlySalary, location: job.location, jobType: job.jobType, workingMode: job.workingMode, logo:job.logo, skills: job.skills} }))
+    res.json(jobs.map((job) => {return {position: job.position, noOfEmployees:job.noOfEmployees, monthlySalary: job.monthlySalary, location: job.location, jobType: job.jobType, workingMode: job.workingMode, logo:job.logo, skills: job.skills} }))
   }
   catch{
     const err = new Error("Error Fetching jobs"); 

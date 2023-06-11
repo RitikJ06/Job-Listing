@@ -11,6 +11,7 @@ const jobSchema = new mongoose.Schema({
   jobDescription: {type: String, required: true},
   aboutCompany: {type: String, required: true},
   skills: {type: Array, required: true},
+  noOfEmployees: {type: String, required: true},
   logo: String,
   location: String,
 });
