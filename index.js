@@ -29,12 +29,8 @@ app.get("/health", (req, res) => {
   res.send("Everything is working fine!");
 });
 
-app.get("/users", (req, res) => {
-  User.find()
-    .then((users) => res.json(users))
-    .catch((error) => next(error));
-});
 
+// api to login a user
 app.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -58,6 +54,7 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
+// api to register a new user
 app.post("/register", async (req, res, next) => {
   const { name, email, mobile, password } = req.body;
 
@@ -90,6 +87,7 @@ app.post("/register", async (req, res, next) => {
   }
 });
 
+// api to create new job
 app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
   const {
     companyName,
@@ -130,7 +128,7 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
       workingMode,
       jobDescription,
       aboutCompany,
-      skills: skills.split(","),
+      skills: skills.split(",").map(s => s.trim()),
       logo,
       location
     });
@@ -142,6 +140,42 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
     next(err);
   }
 });
+
+// api to get all jobs or with filter
+app.get("/api/jobs", async (req, res, next) => {
+  try{
+    const {filterBySkills} = req.body;
+    let jobs;
+    if(filterBySkills){
+      jobs = await Job.find({skills: {$in: filterBySkills.split(',').map(s => s.trim())}})
+    }
+    else{
+      jobs = await Job.find()
+    }
+
+    res.json(jobs.map((job) => {return {position: job.position, monthlySalary: job.monthlySalary, location: job.location, jobType: job.jobType, workingMode: job.workingMode, logo:job.logo, skills: job.skills} }))
+  }
+  catch{
+    const err = new Error("Error Fetching jobs"); 
+    err.status = 500;
+    next(err);
+  } 
+})
+
+// api to get detailed description of a job
+app.get("/api/jobs/:id", async (req, res, next) => {
+  try{
+    const jobID = req.params;
+    const job = await Job.findById(jobID.id);
+    res.json(job)
+  }
+  catch{
+    const err = new Error("Error Fetching the job");
+    err.status = 500;
+    next(err);
+  } 
+})
+
 
 app.use((req, res, next) => {
   const err = new Error("Not found");
