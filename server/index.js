@@ -32,6 +32,7 @@ app.get("/health", (req, res) => {
 // api to login a user
 app.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(req.body)
   try {
     const user = await User.findOne({ email });
     if (user) {
