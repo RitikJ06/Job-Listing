@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cors = require('cors');
 
 const User = require("./models/user");
 const Job = require("./models/job");
@@ -12,7 +13,11 @@ dotenv.config();
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+
 app.use(express.static("./public"));
 
 const isAuthenticated = (req, res, next) => {
@@ -32,7 +37,6 @@ app.get("/health", (req, res) => {
 // api to login a user
 app.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(req.body)
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -42,14 +46,14 @@ app.post("/login", async (req, res, next) => {
           expiresIn: "2h",
         });
         return res.send({
-          status: "SUCCESS",
+          status: 200,
           message: "User logged in successfully",
           name: user.name,
           jwtToken,
         });
       }
     }
-    res.send({ status: "FAIL", message: "Incorrect credentials" });
+    res.send({ status: 401, message: "Incorrect credentials" });
   } catch (error) {
     next(new Error("Something went wrong! Please try after some time."));
   }
@@ -75,13 +79,12 @@ app.post("/register", async (req, res, next) => {
       mobile,
       password: encryptedPassword,
     });
-    const jwtToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+    const jwtToken = jwt.sign({ name }, process.env.JWT_SECRET_KEY, {
       expiresIn: "2h",
     });
     res.send({
       status: "SUCCESS",
       message: "User created successfully",
-      name: name,
       jwtToken,
     });
   } catch (error) {

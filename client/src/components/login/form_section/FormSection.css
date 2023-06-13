@@ -45,4 +45,17 @@
     background: #ED5353;
     border-radius: 5px;
     margin: 4% 0px;
+    cursor: pointer;
+}
+.errorMessage{
+    padding: 1% 5%;
+    text-align: center;
+    box-sizing: border-box;
+    background: #f13c3c;
+    color: white;
+    border: solid 2px #c90000;
+    border-radius: 5px;
+    margin-bottom: 2%;
+    width: 80%;
+    display: none;
 }
