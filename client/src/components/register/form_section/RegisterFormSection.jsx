@@ -1,12 +1,17 @@
 import React from "react";
-import "./FormSection.css";
+import "./RegisterFormSection.css";
 import axios from 'axios';
+// import dotenv from 'dotenv';
+
 import { useRef } from "react";
 import { useNavigate } from 'react-router-dom'
 
+// dotenv.config();
 
 export default function FormSection() {
+  const nameRef = useRef();
   const emailRef = useRef();
+  const mobileRef = useRef();
   const passRef = useRef();
   const errRef = useRef();
   
@@ -15,20 +20,21 @@ export default function FormSection() {
   return (
     <div className="formSection">
       <div className="formHeading">
-        <h1>Already have an account?</h1>
+        <h1>Create an account</h1>
         <span>Your personal job finder is here</span>
       </div>
 
       <div className="errorMessage" ref={errRef}></div>
       <form onSubmit={ async (e) => {
         e.preventDefault()
-        let res = await axios.post('http://localhost:8000/login', {
+        let res = await axios.post( 'http://localhost:8000/register', {
+          name: nameRef.current.value,
           email: emailRef.current.value,
+          mobile: mobileRef.current.value,
           password: passRef.current.value
         })
-        
+
         if(res.data.status === 200){
-          const jwt = res.data.jwtToken
           console.log(res.data.name)
           localStorage.setItem('data', JSON.stringify({name: res.data.name, jwtToken: res.data.jwtToken}));
           navigate('/');
@@ -42,13 +48,14 @@ export default function FormSection() {
           errRef.current.style.display = "block"
         }
         
-
-      }} className="loginForm">
+      }} className="registerForm">
+        <input placeholder="Name" type="text" required name="name" ref={nameRef} />
         <input placeholder="Email" type="email" required name="email" ref={emailRef} />
+        <input placeholder="Mobile" type="number" required name="mobile" ref={mobileRef} />
         <input placeholder="Password" type="password" required name="password" ref={passRef}/>
-        <button type="submit">Sign in</button>
+        <button className="createAccountButton" type="submit">Create Account</button>
       </form>
-      <div>Don’t have an account? <b><u><a href="./register">Sign Up</a></u></b></div>
+      <div>Already have an account? <b><u><a href="./login">Sign in</a></u></b></div>
     </div>
   );
 }

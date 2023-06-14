@@ -1,12 +1,12 @@
 import React from 'react'
-import FormSection from './form_section/FormSection'
+import LoginFormSection from './form_section/LoginFormSection'
 import ImageCover from './../common/coverImage/LoginRegisterCover'
 import './login.css'
 
 export default function Login() {
   return (
     <main>
-      <FormSection/>
+      <LoginFormSection/>
       <ImageCover />
     </main>
   )

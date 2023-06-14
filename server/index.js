@@ -62,7 +62,6 @@ app.post("/login", async (req, res, next) => {
 // api to register a new user
 app.post("/register", async (req, res, next) => {
   const { name, email, mobile, password } = req.body;
-
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -71,7 +70,6 @@ app.post("/register", async (req, res, next) => {
         message: "User already exists with the provided email",
       });
     }
-
     const encryptedPassword = await bcrypt.hash(password, 10);
     await User.create({
       name,
@@ -79,12 +77,13 @@ app.post("/register", async (req, res, next) => {
       mobile,
       password: encryptedPassword,
     });
-    const jwtToken = jwt.sign({ name }, process.env.JWT_SECRET_KEY, {
+    const jwtToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
       expiresIn: "2h",
     });
     res.send({
-      status: "SUCCESS",
+      status: 200,
       message: "User created successfully",
+      name,
       jwtToken,
     });
   } catch (error) {
