@@ -1,10 +1,10 @@
 import React from 'react'
-import './LoginRegisterCoverCss.css'
+import styles from './LoginRegisterCover.module.css'
 
 export default function LoginRegisterCover() {
   return (
-    <div className='imageSection'>
-        <div className='jobFinderMessage'>
+    <div className={styles.imageSection}>
+        <div className={styles.jobFinderMessage}>
             Your Personal Job Finder
         </div>
     </div>

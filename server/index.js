@@ -30,6 +30,10 @@ const isAuthenticated = (req, res, next) => {
   next();
 };
 
+app.get('/authenticate', isAuthenticated, (req, res) => {
+  res.send({status: 202, message: 'user authenticated'})
+})
+
 app.get("/health", (req, res) => {
   res.send("Everything is working fine!");
 });
@@ -66,7 +70,7 @@ app.post("/register", async (req, res, next) => {
     const user = await User.findOne({ email });
     if (user) {
       return res.json({
-        status: "FAIL",
+        status: 403,
         message: "User already exists with the provided email",
       });
     }

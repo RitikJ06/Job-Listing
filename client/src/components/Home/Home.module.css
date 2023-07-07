@@ -1,0 +1,11 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.searchSkillsWrapper{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}

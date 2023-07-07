@@ -1,64 +1,53 @@
-import React from 'react'
-import './Home.css'
-import Header from './../common/header/Header'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-function Skill(props) {
-  return (
-    <div className='skillBlock'>
-      <span className='skillName'>
-        {props.currentSkill}
-      </span>
-      <span onClick={() => {
-        console.log( [...props.skills.splice(props.skills.indexOf(props.currentSkill), 1)])
-        props.setSkills( [...props.skills.splice(props.skills.indexOf(props.currentSkill), 1)] );
-      }} className='closeButton'>
-        X
-      </span>
-    </div>
-  )
-}
-
+import styles from "./Home.module.css";
+import Header from "./header/Header";
+import SearchSection from "./searchSection/SearchSection";
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState();
   const [allSkills, setAllSkills] = useState(["first", "second"]);
-  const [skills, setSkills] = useState(["CSS"]);
-  useEffect( () => {
-    let jobs = axios.get('http://localhost:8000/api/jobs')   
-    console.log(jobs)
+  const [skills, setSkills] = useState([]);
 
-  }, [])
-  
+  useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem("data"));
+    console.log(localData);
+    if (localData) {
+      axios
+        .get(process.env.REACT_APP_BASE_URL + "/authenticate", {
+          headers: {
+            token: localData.jwtToken,
+          },
+        })
+        .then((res) => {
+          if (res.data.status == 202) {
+            setIsLoggedIn(true);
+            setUserData(localData);
+          }
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_BASE_URL + "/api/jobs")
+      .then((res) => console.log(res))
+      .catch((res) => res);
+  }, []);
 
   return (
-    <main>
-      <Header />
-
-      <div className='searchSection'>
-        <div className='searchBoxWrapper'>
-            <input className='searchInput' type="text" placeholder="&#xf002; Type any job title"></input>
-            <div className='skillsSelectorWrapper'> 
-              <div className='skillsSelector'>
-                <select id="skills" name="skills" disabled={!allSkills.length}
-                onChange={(item) => {
-                  if(!skills.includes(item.currentTarget.value)  && item.currentTarget.value!==""){
-                    setSkills([...skills, item.currentTarget.value])
-                  }
-                }}
-                >
-                  <option value="">Skills</option>
-                  {allSkills.map((item) => <option key={item} value={item}>{item}</option>
-                  )}
-                </select> 
-              </div>
-              <div className='skillsList'>
-                {skills.map((item) => <Skill key={item} currentSkill={item} skills={skills} setSkills={setSkills} /> ) }
-              </div>
-            </div>
-
-        </div>
+    <div className={styles.main}>
+      
+      <Header isLoggedIn={isLoggedIn} userData={userData} />
+      <div className={styles.searchSkillsWrapper}>
+        
+        <SearchSection isLoggedIn={isLoggedIn} allSkills={allSkills} skills={skills} setSkills={setSkills}  />
+        
       </div>
-    </main>
-  )
+      
+    </div>
+  );
 }

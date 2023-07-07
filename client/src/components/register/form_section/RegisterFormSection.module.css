@@ -56,7 +56,6 @@
   border-radius: 5px;
   margin-bottom: 2%;
   width: 80%;
-  display: none;
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
