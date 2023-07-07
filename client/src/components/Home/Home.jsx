@@ -5,16 +5,17 @@ import axios from "axios";
 import styles from "./Home.module.css";
 import Header from "./header/Header";
 import SearchSection from "./searchSection/SearchSection";
+import JobCard from "./jobCard/JobCard";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState();
   const [allSkills, setAllSkills] = useState(["first", "second"]);
   const [skills, setSkills] = useState([]);
+  const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
-    console.log(localData);
     if (localData) {
       axios
         .get(process.env.REACT_APP_BASE_URL + "/authenticate", {
@@ -34,8 +35,8 @@ export default function Home() {
   useEffect(() => {
     axios
       .get(process.env.REACT_APP_BASE_URL + "/api/jobs")
-      .then((res) => console.log(res))
-      .catch((res) => res);
+      .then((res) => {setJobs(res.data); console.log(res.data)})
+      .catch((res) => console.log("error fetching jobs", res));
   }, []);
 
   return (
@@ -46,8 +47,12 @@ export default function Home() {
         
         <SearchSection isLoggedIn={isLoggedIn} allSkills={allSkills} skills={skills} setSkills={setSkills}  />
         
+        {jobs.map((job) => {
+          return <JobCard key={job} isLoggedIn={isLoggedIn} job={job}/>
+        })}
       </div>
       
     </div>
   );
+  
 }
