@@ -156,11 +156,11 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
 // api to get all jobs or with filter
 app.get("/api/jobs", async (req, res, next) => {
   try {
-    const { filterBySkills } = req.body;
+    const { filterBySkills } = req.query;
     let jobs;
     if (filterBySkills) {
       jobs = await Job.find({
-        skills: { $in: filterBySkills.split(",").map((s) => s.trim()) },
+        skills: { $in: filterBySkills.map((s) => s.trim()) },
       });
     } else {
       jobs = await Job.find();
@@ -236,18 +236,6 @@ app.put("/api/jobs/:id", isAuthenticated, async (req, res, next) => {
       err.status = 403;
       next(err);
     }
-    console.log({companyName,
-      position,
-      monthlySalary: +monthlySalary,
-      jobType,
-      internshipDuration,
-      workingMode,
-      jobDescription,
-      aboutCompany,
-      skills: skills.split(",").map((s) => s.trim()),
-      noOfEmployees,
-      logo,
-      location})
       
     await Job.findByIdAndUpdate(id, {
       companyName,

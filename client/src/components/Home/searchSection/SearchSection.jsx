@@ -9,9 +9,8 @@ function Skill(props) {
       <span className={styles.skillName}>{props.currentSkill}</span>
       <span
         onClick={() => {
-          props.setSkills((skills) => [
-            ...skills.splice(skills.indexOf(props.currentSkill), 1),
-          ]);
+          props.skills.splice(props.skills.indexOf(props.currentSkill), 1);
+          props.setSkills([...props.skills]);
         }}
         className={styles.closeButton}
       >
@@ -28,14 +27,18 @@ export default function SearchSection(props) {
       <div className={styles.searchSection}>
         <div className={styles.searchBoxWrapper}>
           <input
+            onChange={(e) => {props.setSearchBy(e.currentTarget.value)}}
             className={styles.searchInput}
             type="text"
             placeholder="Type any job title"
           ></input>
         </div>
 
-        <div className={styles.skillsSelectorWrapper} >
-          <div className={styles.skillsSelectorInnterWrapper} style={props.isLoggedIn ? {width: "80%"} : {width: "100%"}}>
+        <div className={styles.skillsSelectorWrapper}>
+          <div
+            className={styles.skillsSelectorInnterWrapper}
+            style={props.isLoggedIn ? { width: "80%" } : { width: "100%" }}
+          >
             <div className={styles.skillsLeftWrapper}>
               <div className={styles.skillsSelector}>
                 <select
@@ -66,6 +69,7 @@ export default function SearchSection(props) {
               <div className={styles.skillsList}>
                 {props.skills.map((item) => (
                   <Skill
+                    skills={props.skills}
                     key={item}
                     currentSkill={item}
                     setSkills={props.setSkills}
@@ -75,14 +79,29 @@ export default function SearchSection(props) {
             </div>
 
             {props.skills.length > 0 && (
-              <span className={styles.clearSkills} style={props.isLoggedIn ? {width: "90%", justifySelf:"flex-end!important"} : {}} onClick={() => props.setSkills([])} >Clear</span>
+              <span
+                className={styles.clearSkills}
+                style={
+                  props.isLoggedIn
+                    ? { width: "90%", justifySelf: "flex-end!important" }
+                    : {}
+                }
+              >
+                <span onClick={() => props.setSkills([])}>Clear</span>
+              </span>
             )}
           </div>
 
-          {props.isLoggedIn && <div className={styles.addJobBtnWrapper}> 
-            <button onClick={() => navigate('/addjob')} className={styles.addJobButton}>+Add Job</button>
-          </div>
-          }
+          {props.isLoggedIn && (
+            <div className={styles.addJobBtnWrapper}>
+              <button
+                onClick={() => navigate("/addjob")}
+                className={styles.addJobButton}
+              >
+                +Add Job
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

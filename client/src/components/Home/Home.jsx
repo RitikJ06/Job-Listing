@@ -10,9 +10,11 @@ import JobCard from "./jobCard/JobCard";
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState();
-  const [allSkills, setAllSkills] = useState(["first", "second"]);
+  const [allSkills, setAllSkills] = useState([]);
   const [skills, setSkills] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [allJobs, setAllJobs] = useState([]);
+  const [searchBy, setSearchBy] = useState([]);
 
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
@@ -36,18 +38,52 @@ export default function Home() {
   useEffect(() => {
     axios
       .get(process.env.REACT_APP_BASE_URL + "/api/jobs")
-      .then((res) => {setJobs(res.data); console.log(res.data)})
-      .catch((res) => console.log("error fetching jobs", res));
-  }, []);
+      .then((res) => {
+        let allSkillsToSet = [];
+        res.data.map((jobItem) => {
+          jobItem.skills.map((jobSkill) => {
+            if(!allSkillsToSet.includes(jobSkill)){
+              allSkillsToSet.push(jobSkill);
+            } 
+          })
+        })
+        setAllSkills(allSkillsToSet);
+        setAllJobs(res.data);
+      })
+      .catch(() => console.log("Something went wrong!!"))
+  }, [])
 
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_BASE_URL + "/api/jobs", {
+        params: {filterBySkills : skills} })
+      .then((res) => {setJobs(res.data); setAllJobs(res.data)})
+      .catch((res) => console.log("error fetching jobs", res));
+  }, [skills]);
+
+  useEffect(() => {
+    if(searchBy === ""){
+      setJobs([...allJobs]);
+    }
+    else{
+      setJobs([
+        ...allJobs.filter((jobItem) =>
+        jobItem.position
+        .toLowerCase()
+        .includes(searchBy)
+        ),
+      ]);
+    }
+  
+  }, [searchBy, skills])
+  
   return (
     <div className={styles.main}>
       
       <Header isLoggedIn={isLoggedIn} userData={userData} />
       <div className={styles.searchSkillsWrapper}>
         
-        <SearchSection isLoggedIn={isLoggedIn} allSkills={allSkills} skills={skills} setSkills={setSkills}  />
-        
+        <SearchSection setSearchBy={setSearchBy} isLoggedIn={isLoggedIn} allSkills={allSkills} skills={skills} setSkills={setSkills}  />
         {jobs.map((job) => {
           return <JobCard key={job._id} isLoggedIn={isLoggedIn} job={job}/>
         })}
