@@ -25,7 +25,7 @@ const isAuthenticated = (req, res, next) => {
     const user = jwt.verify(req.headers.token, process.env.JWT_SECRET_KEY);
     req.user = user;
   } catch (error) {
-    return res.send({ status: "FAIL", message: "Please login first" });
+    return res.send({ status: 401, message: "Please login first" });
   }
   next();
 };
@@ -145,7 +145,7 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
       location
     });
 
-    return res.json({ staus: "success", message: "Job added successfully" });
+    return res.json({ staus: 201, message: "Job added successfully" });
   } catch {
     const err = new Error("Error creating new job");
     err.status = 500;
@@ -177,6 +177,7 @@ app.get("/api/jobs", async (req, res, next) => {
           workingMode: job.workingMode,
           logo: job.logo,
           skills: job.skills,
+          _id: job._id
         };
       })
     );
@@ -235,7 +236,19 @@ app.put("/api/jobs/:id", isAuthenticated, async (req, res, next) => {
       err.status = 403;
       next(err);
     }
-
+    console.log({companyName,
+      position,
+      monthlySalary: +monthlySalary,
+      jobType,
+      internshipDuration,
+      workingMode,
+      jobDescription,
+      aboutCompany,
+      skills: skills.split(",").map((s) => s.trim()),
+      noOfEmployees,
+      logo,
+      location})
+      
     await Job.findByIdAndUpdate(id, {
       companyName,
       position,
@@ -251,7 +264,7 @@ app.put("/api/jobs/:id", isAuthenticated, async (req, res, next) => {
       location
     })
 
-    return res.json({ staus: "success", message: "Job updated successfully"});
+    return res.json({ staus: 200, message: "Job updated successfully"});
   } catch {
     const err = new Error("Error updating the job");
     err.status = 500;

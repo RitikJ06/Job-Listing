@@ -28,7 +28,8 @@ export default function Home() {
             setIsLoggedIn(true);
             setUserData(localData);
           }
-        });
+        })
+        ;
     }
   }, []);
 
@@ -48,7 +49,7 @@ export default function Home() {
         <SearchSection isLoggedIn={isLoggedIn} allSkills={allSkills} skills={skills} setSkills={setSkills}  />
         
         {jobs.map((job) => {
-          return <JobCard key={job} isLoggedIn={isLoggedIn} job={job}/>
+          return <JobCard key={job._id} isLoggedIn={isLoggedIn} job={job}/>
         })}
       </div>
       

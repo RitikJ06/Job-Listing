@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     box-shadow: 0px 0px 22px 2px #FF202040;
-    margin: 20px 0px;
+    margin: 10px 0px;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -99,7 +99,7 @@
     margin-right: 20px;
 }
 .viewDetailBtn{
-    padding: 5px 20px;
+    padding: 8px 20px;
     background: #ED5353;
     border-radius: 4px;
     border: none;

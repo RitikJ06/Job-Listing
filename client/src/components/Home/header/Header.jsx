@@ -35,7 +35,7 @@ export default function Header(props) {
               className={styles.logoutButton}
               onClick={() => {
                 localStorage.removeItem("data");
-                navigate("/");
+                navigate(0);
               }}
             >
               Logout

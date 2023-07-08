@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./searchSection.module.css";
 
+import { useNavigate } from "react-router-dom";
+
 function Skill(props) {
   return (
     <div className={styles.skillBlock}>
@@ -20,6 +22,7 @@ function Skill(props) {
 }
 
 export default function SearchSection(props) {
+  const navigate = useNavigate();
   return (
     <>
       <div className={styles.searchSection}>
@@ -77,7 +80,7 @@ export default function SearchSection(props) {
           </div>
 
           {props.isLoggedIn && <div className={styles.addJobBtnWrapper}> 
-            <button className={styles.addJobButton}>+Add Job</button>
+            <button onClick={() => navigate('/addjob')} className={styles.addJobButton}>+Add Job</button>
           </div>
           }
         </div>

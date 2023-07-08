@@ -1,11 +1,13 @@
 import React from "react";
 import styles from "./JobCard.module.css";
+import { useNavigate } from "react-router-dom";
 
 import peopleIcon from "./images/people.svg";
 import flagIcon from "./images/flag.svg";
 import rupeeIcon from "./images/rupee.svg";
 
 export default function JobCard(props) {
+  const navigate = useNavigate();
   return (
     <div className={styles.jobsCard}>
       <div className={styles.jobCardLeftWrapper}>
@@ -48,11 +50,11 @@ export default function JobCard(props) {
       <div className={styles.jobCardRightWrapper}>
         <div className={styles.skillsWrapper}>
             {props.job.skills.map((skill) => 
-             <span className={styles.skillBlock}>{skill}</span>
+             <span key={skill} className={styles.skillBlock}>{skill}</span>
             )}
         </div>
         <div className={styles.editDetailsButtons}>
-            {props.isLoggedIn && <button className={styles.editJobBtn}>Edit job</button>}
+            {props.isLoggedIn && <button onClick={() => (navigate(`/addjob?id=${props.job._id}`))} className={styles.editJobBtn}>Edit job</button>}
             <button className={styles.viewDetailBtn}>View Details</button>
         </div>
       </div>

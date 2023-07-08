@@ -1,6 +1,6 @@
 .searchSection{
     display: flex;
-    margin-top: 5%;
+    margin: 4% 0px;
     flex-direction: column;
     width: 100%;
     justify-content: center;
@@ -95,6 +95,7 @@
     display: flex;
     color: #ED5353;
     justify-content: flex-end;
+    cursor: pointer;
 }
 .addJobBtnWrapper{
     display: flex;
