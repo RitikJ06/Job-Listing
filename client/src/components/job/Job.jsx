@@ -3,7 +3,7 @@ import styles from "./Job.module.css";
 import Header from "../common/header/Header";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import calenderIcon from "./images/calenderIcon.svg";
 import moneyIcon from "./images/moneyIcon.svg";
@@ -14,6 +14,7 @@ export default function Job() {
   const [job, setJob] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
@@ -38,7 +39,6 @@ export default function Job() {
       .get(process.env.REACT_APP_BASE_URL + "/api/jobs/" + id)
       .then((res) => {
         setJob(res.data);
-        console.log(res.data);
       })
       .catch(() => {
         console.log("Something went wrong fetching job data");
@@ -67,7 +67,7 @@ export default function Job() {
               <div className={styles.jobLocation}>{job.location} | India</div>
             </div>
             {isLoggedIn && (
-              <button className={styles.editButton}>Edit Job</button>
+              <button onClick={() => {navigate(`/addjob?id=${job._id}`)}} className={styles.editButton}>Edit Job</button>
             )}
           </div>
           <div className={styles.jobAttributesWrapper}>
