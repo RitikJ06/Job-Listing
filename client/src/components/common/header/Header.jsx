@@ -14,7 +14,7 @@ export default function Header(props) {
           <>
             <button
               onClick={() => {
-                navigate("./login");
+                navigate("/login");
               }}
               className={styles.loginButton}
             >
@@ -22,7 +22,7 @@ export default function Header(props) {
             </button>
             <button
               onClick={() => {
-                navigate("./register");
+                navigate("/register");
               }}
               className={styles.registerButton}
             >

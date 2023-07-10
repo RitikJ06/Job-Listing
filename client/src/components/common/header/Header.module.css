@@ -1,6 +1,7 @@
 .headerBlock{
     width: 100vw;
-    height: 16vh;
+    min-height: 15%;
+    height: 15%;
     background: url('./header.PNG');
     background-repeat: no-repeat;
     background-size: cover;

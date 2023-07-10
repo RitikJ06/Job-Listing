@@ -8,6 +8,7 @@ import rupeeIcon from "./images/rupee.svg";
 
 export default function JobCard(props) {
   const navigate = useNavigate();
+
   return (
     <div className={styles.jobsCard}>
       <div className={styles.jobCardLeftWrapper}>
@@ -24,19 +25,25 @@ export default function JobCard(props) {
             {props.job.noOfEmployees && (
               <span className={styles.detailWithIcon}>
                 <img src={peopleIcon} alt="people icon" />
-                <span className={styles.jobDetailText}>{props.job.noOfEmployees}</span>
+                <span className={styles.jobDetailText}>
+                  {props.job.noOfEmployees}
+                </span>
               </span>
             )}
             {props.job.monthlySalary && (
               <span className={styles.detailWithIcon}>
                 <img src={rupeeIcon} alt="rupee icon" />
-                <span className={styles.jobDetailText}>{props.job.monthlySalary}</span>
+                <span className={styles.jobDetailText}>
+                  {props.job.monthlySalary}
+                </span>
               </span>
             )}
             {props.job.location && (
               <span className={styles.detailWithIcon}>
                 <img src={flagIcon} style={{ width: "35%" }} alt="flag icon" />
-                <span className={styles.jobDetailText}>{props.job.location}</span>
+                <span className={styles.jobDetailText}>
+                  {props.job.location}
+                </span>
               </span>
             )}
           </div>
@@ -49,16 +56,29 @@ export default function JobCard(props) {
 
       <div className={styles.jobCardRightWrapper}>
         <div className={styles.skillsWrapper}>
-            {props.job.skills.map((skill) => 
-             <span key={skill} className={styles.skillBlock}>{skill}</span>
-            )}
+          {props.job.skills.map((skill) => (
+            <span key={skill} className={styles.skillBlock}>
+              {skill}
+            </span>
+          ))}
         </div>
         <div className={styles.editDetailsButtons}>
-            {props.isLoggedIn && <button onClick={() => (navigate(`/addjob?id=${props.job._id}`))} className={styles.editJobBtn}>Edit job</button>}
-            <button className={styles.viewDetailBtn}>View Details</button>
+          {props.isLoggedIn && (
+            <button
+              onClick={() => navigate(`/addjob?id=${props.job._id}`)}
+              className={styles.editJobBtn}
+            >
+              Edit job
+            </button>
+          )}
+          <button
+            onClick={() => navigate(`/job/${props.job._id}`)}
+            className={styles.viewDetailBtn}
+          >
+            View Details
+          </button>
         </div>
       </div>
-
     </div>
   );
 }

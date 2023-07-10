@@ -14,6 +14,7 @@ const jobSchema = new mongoose.Schema({
   noOfEmployees: {type: String, required: true},
   logo: String,
   location: String,
+  createdOn: {type: Date, required: true},
 });
 
 module.exports = mongoose.model('Job', jobSchema);

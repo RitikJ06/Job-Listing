@@ -1,0 +1,103 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+.middleContainer{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin-top: -1%;
+}
+.headingBlock{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5%;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 23px 2px #0000001A;
+    background: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.jobDescriptionWrapper{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 23px 2px #0000001A;
+    margin: 40px 0px;
+    padding: 3%;
+    box-sizing: border-box;
+}
+.postedOnWrapper{
+    width: 100%;
+}
+.positionHeadingWrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.postionHeadingInnerWrapper{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+.positionHeading{
+    margin: 10px 0px;
+}
+.jobLocation{
+    color: #ED5353;
+}
+.editButton{
+    background: #ED5353;
+    padding: 10px 20px;
+    height: fit-content;
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
+.jobAttributesWrapper{
+    display: flex;
+    width: 100%;
+    margin: 15px 0px;
+}
+.jobAttributeWrapper{
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    padding-right: 20px;
+    
+}
+.attributeHeading{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    color: #999999;
+    margin-bottom: 5px;
+}
+.attributeIcon{
+    padding-right: 10px;
+    height: 20px;
+}
+.stipend{
+    white-space: nowrap;
+}
+.descriptionHeading{
+    font-weight: 700;
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+.skillsBlock{
+    margin-top: 10px;
+}
+.skill{
+    background: #FFEEEE;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-right: 20px;
+}

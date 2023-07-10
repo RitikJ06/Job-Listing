@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const cors = require('cors');
+const cors = require("cors");
 
 const User = require("./models/user");
 const Job = require("./models/job");
@@ -13,10 +13,9 @@ dotenv.config();
 
 const app = express();
 
-
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.use(express.static("./public"));
 
@@ -30,9 +29,9 @@ const isAuthenticated = (req, res, next) => {
   next();
 };
 
-app.get('/authenticate', isAuthenticated, (req, res) => {
-  res.send({status: 202, message: 'user authenticated'})
-})
+app.get("/authenticate", isAuthenticated, (req, res) => {
+  res.send({ status: 202, message: "user authenticated" });
+});
 
 app.get("/health", (req, res) => {
   res.send("Everything is working fine!");
@@ -142,10 +141,11 @@ app.post("/api/jobs", isAuthenticated, async (req, res, next) => {
       skills: skills.split(",").map((s) => s.trim()),
       noOfEmployees,
       logo,
-      location
+      location,
+      createdOn: new Date(),
     });
 
-    return res.json({ staus: 201, message: "Job added successfully" });
+    return res.json({ status: 201, message: "Job added successfully" });
   } catch {
     const err = new Error("Error creating new job");
     err.status = 500;
@@ -177,7 +177,7 @@ app.get("/api/jobs", async (req, res, next) => {
           workingMode: job.workingMode,
           logo: job.logo,
           skills: job.skills,
-          _id: job._id
+          _id: job._id,
         };
       })
     );
@@ -203,7 +203,7 @@ app.get("/api/jobs/:id", async (req, res, next) => {
 
 // api to edit a job post
 app.put("/api/jobs/:id", isAuthenticated, async (req, res, next) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const {
     companyName,
     position,
@@ -236,7 +236,7 @@ app.put("/api/jobs/:id", isAuthenticated, async (req, res, next) => {
       err.status = 403;
       next(err);
     }
-      
+
     await Job.findByIdAndUpdate(id, {
       companyName,
       position,
@@ -249,10 +249,10 @@ app.put("/api/jobs/:id", isAuthenticated, async (req, res, next) => {
       skills: skills.split(",").map((s) => s.trim()),
       noOfEmployees,
       logo,
-      location
-    })
+      location,
+    });
 
-    return res.json({ staus: 200, message: "Job updated successfully"});
+    return res.json({ status: 200, message: "Job updated successfully" });
   } catch {
     const err = new Error("Error updating the job");
     err.status = 500;

@@ -3,10 +3,10 @@ import styles from "./AddJobForm.module.css";
 import axios from "axios";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function AddJobForm(props) {
   const [showInternshipDuration, setShowInternshipDuration] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [editingJob, setEditingJob] = useState();
   const companyNameRef = useRef();
   const logoRef = useRef();
@@ -53,7 +53,9 @@ export default function AddJobForm(props) {
               position: positionRef.current.value,
               monthlySalary: salaryRef.current.value,
               jobType: jobTypeRef.current.value,
-              internshipDuration: internshipDurationRef.current.value,
+              internshipDuration: internshipDurationRef.current
+                ? internshipDurationRef.current.value
+                : "",
               workingMode: remoteRef.current.value,
               jobDescription: descriptionRef.current.value,
               aboutCompany: aboutCompanyRef.current.value,
@@ -71,22 +73,21 @@ export default function AddJobForm(props) {
           .then((res) => {
             switch (res.data.status) {
               case 201:
-                setSuccessMessage("Successfully added new Job");
+                toast.success("Job Added Successfully");
                 break;
               case 401:
-                setSuccessMessage("Please login first");
+                toast.warning("Please login first!");
                 break;
               case 403:
-                setSuccessMessage("Error! Complete data not provided");
+                toast.warning("Error! Complete data not provided");
                 break;
               default:
-                setSuccessMessage("Something went wrong!");
+                toast.error("Something went wrong!");
             }
             navigate("/");
           })
-          .catch((res) => console.log("Something went wrong!"));
+          .catch((res) => toast.error("Something went wrong!"));
       } else {
-        console.log("editing side");
         axios
           .put(
             process.env.REACT_APP_BASE_URL + "/api/jobs/" + editingJob._id,
@@ -115,20 +116,21 @@ export default function AddJobForm(props) {
           .then((res) => {
             switch (res.data.status) {
               case 200:
-                setSuccessMessage("Successfully updated the Job");
+                toast.success("Job Updated Successfully");
                 break;
               case 401:
-                setSuccessMessage("Please login first");
+                toast.warning("Please login first!");
                 break;
               case 403:
-                setSuccessMessage("Error! Complete data not provided");
+                toast.warning("Error! Complete data not provided");
                 break;
               default:
-                setSuccessMessage("Something went wrong!");
+                toast.error("Something went wrong!");
             }
             navigate("/");
+            console.log(res);
           })
-          .catch((err) => setSuccessMessage("Something went Wrong!"));
+          .catch((err) => toast.error("Something went wrong!"));
       }
     }
   };
@@ -272,7 +274,6 @@ export default function AddJobForm(props) {
             id="location"
             type="text"
             placeholder="Enter Location"
-            required
           />
         </div>
         <div className={styles.addJobFormRow}>
@@ -318,10 +319,14 @@ export default function AddJobForm(props) {
           />
         </div>
         <div className={styles.buttonsRow}>
-          {successMessage && (
-            <span style={{ marginRight: "30px" }}>{successMessage}</span>
-          )}
-          <button onClick={() => {navigate('/')}} className={styles.cancelButton} type="reset">
+          <button
+            onClick={() => {
+              toast.warning("Job Add/Edit Canceled.");
+              navigate("/");
+            }}
+            className={styles.cancelButton}
+            type="reset"
+          >
             Cancel
           </button>
           <button className={styles.submitButton} type="submit">

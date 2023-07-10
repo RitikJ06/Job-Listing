@@ -27,7 +27,9 @@ export default function SearchSection(props) {
       <div className={styles.searchSection}>
         <div className={styles.searchBoxWrapper}>
           <input
-            onChange={(e) => {props.setSearchBy(e.currentTarget.value)}}
+            onChange={(e) => {
+              props.setSearchBy(e.currentTarget.value);
+            }}
             className={styles.searchInput}
             type="text"
             placeholder="Type any job title"
