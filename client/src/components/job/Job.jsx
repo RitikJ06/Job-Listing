@@ -39,6 +39,7 @@ export default function Job() {
       .get(process.env.REACT_APP_BASE_URL + "/api/jobs/" + id)
       .then((res) => {
         setJob(res.data);
+        console.log(res.data);
       })
       .catch(() => {
         console.log("Something went wrong fetching job data");
@@ -82,17 +83,19 @@ export default function Job() {
               </div>
               <div className={styles.stipend}>Rs {job.monthlySalary}/month</div>
             </div>
-            <div className={styles.jobAttributeWrapper}>
-              <div className={styles.attributeHeading}>
-                <img
-                  alt="duration icon"
-                  src={calenderIcon}
-                  className={styles.attributeIcon}
-                />
-                Duration
+            { job.internshipDuration &&
+              <div className={styles.jobAttributeWrapper}>
+                <div className={styles.attributeHeading}>
+                  <img
+                    alt="duration icon"
+                    src={calenderIcon}
+                    className={styles.attributeIcon}
+                    />
+                  Duration
+                </div>
+                <div className={styles.internshipDuration}> {job.internshipDuration}</div>
               </div>
-              <div className={styles.stipend}>Rs {job.monthlySalary}/month</div>
-            </div>
+            }
           </div>
 
           <div className={styles.descriptionHeading}>About Company</div>

@@ -82,7 +82,7 @@
     padding-right: 10px;
     height: 20px;
 }
-.stipend{
+.stipend, .internshipDuration{
     white-space: nowrap;
 }
 .descriptionHeading{
