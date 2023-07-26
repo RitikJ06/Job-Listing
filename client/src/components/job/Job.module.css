@@ -101,3 +101,20 @@
     border-radius: 20px;
     margin-right: 20px;
 }
+
+@media (max-width: 768px) {
+    .middleContainer{
+        width: 90%;
+    }
+    .jobDescriptionWrapper{
+        width: 90%;
+        padding: 10%;
+    }
+    .skillsBlock{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .skill{
+        margin: 10px 10px 0px 0px;
+    }
+}

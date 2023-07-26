@@ -114,3 +114,9 @@
     padding: 10px 0px;
     height: fit-content;
 }
+
+@media (max-width: 768px) {
+    .searchInput{
+        padding: 15px;
+    }
+}

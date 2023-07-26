@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .searchSkillsWrapper{
@@ -10,4 +11,10 @@
     width: 60%;
     padding-bottom: 2rem;
     align-items: center;
+}
+
+@media(max-width: 768px){
+    .searchSkillsWrapper{
+        width: 85%;
+    }
 }

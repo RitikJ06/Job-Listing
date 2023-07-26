@@ -105,3 +105,26 @@
     border: none;
     color: white;
 }
+
+@media(max-width:768px){
+    .jobsCard{
+        flex-direction: column;
+    }
+    .jobCardLeftWrapper{
+        width: 100%;
+    }
+    .jobCardRightWrapper{
+        width: 100%;
+        /* justify-content: flex-start; */
+    }
+    .skillBlock{
+        margin: 5px 5px;
+        white-space: nowrap;
+    }
+    .skillsWrapper{
+        flex-wrap: wrap;
+    }
+    .locationSalaryWrapper{
+        flex-wrap: wrap;
+    }
+}

@@ -165,6 +165,11 @@ app.get("/api/jobs", async (req, res, next) => {
     } else {
       jobs = await Job.find();
     }
+    //       Collections
+    // user          Product
+    // username      added by(username reference)
+
+    
 
     res.json(
       jobs.map((job) => {
