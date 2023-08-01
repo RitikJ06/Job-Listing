@@ -67,9 +67,12 @@ export default function Job() {
               <h1 className={styles.positionHeading}>{job.position}</h1>
               <div className={styles.jobLocation}>{job.location} | India</div>
             </div>
-            {isLoggedIn && (
-              <button onClick={() => {navigate(`/addjob?id=${job._id}`)}} className={styles.editButton}>Edit Job</button>
-            )}
+            <div className={styles.buttonWrapper}>
+              <button onClick={() => navigate(-1)} className={styles.backButton}>Back</button>
+              {isLoggedIn && (
+                <button onClick={() => {navigate(`/addjob?id=${job._id}`)}} className={styles.editButton}>Edit Job</button>
+                )}
+            </div>
           </div>
           <div className={styles.jobAttributesWrapper}>
             <div className={styles.jobAttributeWrapper}>

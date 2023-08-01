@@ -58,6 +58,14 @@
     margin-bottom: 2%;
     width: 80%;
 }
+.backButton{
+    padding: 10px 0px;
+    width: 70px;
+    border: solid 2px #ED5353;
+    color: #ED5353;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
 @media (max-width: 768px) {
     .formSection{
         width: 100%;

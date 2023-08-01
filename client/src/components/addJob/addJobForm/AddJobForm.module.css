@@ -66,3 +66,8 @@
     border-radius: 7px;
     border: none;
 }
+@media(max-width: 768px) {
+    .addJobFormWrapper{
+        width: 100%;
+    }
+}

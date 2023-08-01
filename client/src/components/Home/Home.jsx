@@ -29,7 +29,7 @@ export default function Home() {
           },
         })
         .then((res) => {
-          if (res.data.status == 202) {
+          if (res.data.status === 202) {
             setIsLoggedIn(true);
             setUserData(localData);
           }
@@ -79,7 +79,7 @@ export default function Home() {
       ]) ;
     }
   }, [searchBy]);
-  
+
   return (
     <div className={styles.main}>
       <Header isLoggedIn={isLoggedIn} userData={userData} />

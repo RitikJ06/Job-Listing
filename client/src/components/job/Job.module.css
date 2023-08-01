@@ -51,13 +51,22 @@
 .jobLocation{
     color: #ED5353;
 }
+.buttonWrapper{
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
 .editButton{
     background: #ED5353;
-    padding: 10px 20px;
+    padding: 10px 0px;
+    border: solid 2px #ED5353;
+    width: 70px;
     height: fit-content;
     color: white;
-    border: none;
     border-radius: 6px;
+    margin: 5px;
 }
 .jobAttributesWrapper{
     display: flex;
@@ -101,7 +110,16 @@
     border-radius: 20px;
     margin-right: 20px;
 }
-
+.backButton{
+    padding: 10px 0px;
+    width: 70px;
+    border: solid 2px #ED5353;
+    color: #ED5353;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0);
+    margin: 5px;
+}
 @media (max-width: 768px) {
     .middleContainer{
         width: 90%;

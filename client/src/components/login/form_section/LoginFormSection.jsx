@@ -13,6 +13,7 @@ export default function FormSection() {
 
   return (
     <div className={styles.formSection}>
+      <button onClick={() => navigate(-1)} className={styles.backButton}>Back</button>
       <div className={styles.formHeading}>
         <h1>Already have an account?</h1>
         <span>Your personal job finder is here</span>
