@@ -158,34 +158,25 @@ app.get("/api/jobs", async (req, res, next) => {
   try {
     const { filterBySkills } = req.query;
     let jobs;
-    if (filterBySkills) {
-      jobs = await Job.find({
-        skills: { $in: filterBySkills.map((s) => s.trim()) },
-      });
-    } else {
-      jobs = await Job.find();
-    }
-    //       Collections
-    // user          Product
-    // username      added by(username reference)
 
-    
-
-    res.json(
-      jobs.map((job) => {
-        return {
-          position: job.position,
-          noOfEmployees: job.noOfEmployees,
-          monthlySalary: job.monthlySalary,
-          location: job.location,
-          jobType: job.jobType,
-          workingMode: job.workingMode,
-          logo: job.logo,
-          skills: job.skills,
-          _id: job._id,
-        };
-      })
+    jobs = await Job.find(
+      filterBySkills
+        ? { skills: { $in: filterBySkills.map((s) => s.trim()) } }
+        : {},
+        {
+          position: 1,
+          noOfEmployees: 1,
+          monthlySalary: 1,
+          locatio: 1,
+          jobType: 1,
+          workingMode: 1,
+          logo: 1,
+          skills: 1,
+          _id: 1,
+        }
     );
+
+    res.json(jobs);
   } catch {
     const err = new Error("Error Fetching jobs");
     err.status = 500;

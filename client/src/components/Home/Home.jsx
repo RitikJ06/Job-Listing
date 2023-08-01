@@ -15,9 +15,9 @@ export default function Home() {
   const [userData, setUserData] = useState();
   const [allSkills, setAllSkills] = useState([]);
   const [skills, setSkills] = useState([]);
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState();
   const [allJobs, setAllJobs] = useState([]);
-  const [searchBy, setSearchBy] = useState([]);
+  const [searchBy, setSearchBy] = useState("");
 
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
@@ -73,7 +73,7 @@ export default function Home() {
     } else {
       setJobs([
         ...allJobs.filter((jobItem) =>
-          jobItem.position.toLowerCase().includes(searchBy)
+          jobItem.position.toLowerCase().includes(searchBy.toLowerCase())
         ),
       ]);
     }
@@ -90,10 +90,16 @@ export default function Home() {
           skills={skills}
           setSkills={setSkills}
         />
-        {jobs.length !== 0 ? (
-          jobs.map((job) => {
-            return <JobCard key={job._id} isLoggedIn={isLoggedIn} job={job} />;
-          })
+        {jobs ? (
+          jobs.length != 0 ? (
+            jobs.map((job) => {
+              return (
+                <JobCard key={job._id} isLoggedIn={isLoggedIn} job={job} />
+              );
+            })
+          ) : (
+            <div>No data found</div>
+          )
         ) : (
           <img width="200px" src={loadingGif} alt="Loading Animation!!" />
         )}
