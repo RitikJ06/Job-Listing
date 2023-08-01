@@ -17,7 +17,7 @@ export default function Home() {
   const [skills, setSkills] = useState([]);
   const [jobs, setJobs] = useState(null);
   const [allJobs, setAllJobs] = useState([]);
-  const [searchBy, setSearchBy] = useState("");
+  const [searchBy, setSearchBy] = useState(null);
 
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
@@ -61,8 +61,8 @@ export default function Home() {
         params: { filterBySkills: skills },
       })
       .then((res) => {
-        setJobs(res.data);
         setAllJobs(res.data);
+        setJobs(res.data);
       })
       .catch((res) => console.log("error fetching jobs", res));
   }, [skills]);
@@ -71,14 +71,15 @@ export default function Home() {
     if (searchBy === "") {
       setJobs([...allJobs]);
     } else {
+      if (searchBy)
       setJobs([
         ...allJobs.filter((jobItem) =>
           jobItem.position.toLowerCase().includes(searchBy.toLowerCase())
         ),
-      ]);
+      ]) ;
     }
   }, [searchBy]);
-
+  
   return (
     <div className={styles.main}>
       <Header isLoggedIn={isLoggedIn} userData={userData} />
@@ -90,8 +91,8 @@ export default function Home() {
           skills={skills}
           setSkills={setSkills}
         />
-        {jobs ? (
-          jobs.length != 0 ? (
+        {console.log(jobs) || jobs ? (
+          jobs.length !== 0 ? (
             jobs.map((job) => {
               return (
                 <JobCard key={job._id} isLoggedIn={isLoggedIn} job={job} />
