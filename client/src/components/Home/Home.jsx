@@ -15,7 +15,7 @@ export default function Home() {
   const [userData, setUserData] = useState();
   const [allSkills, setAllSkills] = useState([]);
   const [skills, setSkills] = useState([]);
-  const [jobs, setJobs] = useState();
+  const [jobs, setJobs] = useState(null);
   const [allJobs, setAllJobs] = useState([]);
   const [searchBy, setSearchBy] = useState("");
 
@@ -77,7 +77,7 @@ export default function Home() {
         ),
       ]);
     }
-  }, [searchBy, skills]);
+  }, [searchBy]);
 
   return (
     <div className={styles.main}>
